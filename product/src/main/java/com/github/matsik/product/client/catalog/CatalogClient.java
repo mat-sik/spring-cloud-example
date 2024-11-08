@@ -2,6 +2,7 @@ package com.github.matsik.product.client.catalog;
 
 import com.github.matsik.commons.response.PageResponse;
 import com.github.matsik.commons.response.ProductResponse;
+import com.github.matsik.product.PageRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,5 +22,13 @@ public interface CatalogClient {
             @RequestParam int pageSize,
             @RequestParam boolean ascending
     );
+
+    default PageResponse<ProductResponse> getAllProducts(PageRequest request) {
+        return getAllProducts(
+                request.pageNumber(),
+                request.pageSize(),
+                request.ascending()
+        ) ;
+    }
 
 }
