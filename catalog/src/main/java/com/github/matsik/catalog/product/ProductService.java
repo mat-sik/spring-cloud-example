@@ -17,7 +17,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Product findById(String id) {
         Optional<Product> product = productRepository.findById(id);
-        return product.orElseThrow(() -> new RuntimeException(String.format("Product with: %s does not exist", id)));
+        return product.orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     @Transactional(readOnly = true)
