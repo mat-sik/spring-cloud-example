@@ -1,1 +1,7 @@
-spring.application.name=catalog
+spring:
+  application:
+    name: catalog
+
+csv:
+  data:
+    path: ${CSV_FILE_PATH}
