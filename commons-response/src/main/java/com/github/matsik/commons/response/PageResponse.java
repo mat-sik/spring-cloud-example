@@ -1,4 +1,4 @@
-package com.github.matsik.catalog.pagination;
+package com.github.matsik.commons.response;
 
 import java.util.List;
 

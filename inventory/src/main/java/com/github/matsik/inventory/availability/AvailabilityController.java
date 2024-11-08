@@ -1,5 +1,6 @@
 package com.github.matsik.inventory.availability;
 
+import com.github.matsik.commons.response.AvailabilityResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,17 @@ public class AvailabilityController {
     private final AvailabilityService availabilityService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Availability> findById(@PathVariable String id) {
+    public ResponseEntity<AvailabilityResponse> findById(@PathVariable String id) {
         Availability availability = availabilityService.findById(id);
-        return ResponseEntity.ok(availability);
+        AvailabilityResponse response = mapToResponse(availability);
+        return ResponseEntity.ok(response);
+    }
+
+    private static AvailabilityResponse mapToResponse(Availability availability) {
+        return new AvailabilityResponse(
+                availability.getId(),
+                availability.getCount()
+        );
     }
 
 }
