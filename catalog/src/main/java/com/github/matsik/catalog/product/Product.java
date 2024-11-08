@@ -2,6 +2,7 @@ package com.github.matsik.catalog.product;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,7 @@ public class Product {
 
     private String nameTitle;
 
+    @Lob
     private String description;
 
     private BigDecimal listPrice;
@@ -39,14 +41,17 @@ public class Product {
 
     private String averageProductRating;
 
+    @Lob
     private String productUrl;
 
+    @Lob
     private String productImageUrls;
 
     private String brand;
 
     private int totalNumberReviews;
 
+    @Lob
     private String reviews;
 
 }
