@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class InventoryApplication {
 
     private static final long MIN_AVAILABILITY = 0;
-    private static final long MAX_AVAILABILITY = 100;
+    private static final long MAX_AVAILABILITY = 3;
 
     public static void main(String[] args) {
         SpringApplication.run(InventoryApplication.class, args);
@@ -54,7 +54,7 @@ public class InventoryApplication {
         try {
             return Availability.builder()
                     .id(csvRow[0])
-                    .count(ThreadLocalRandom.current().nextLong(MIN_AVAILABILITY, MAX_AVAILABILITY))
+                    .count(ThreadLocalRandom.current().nextLong(MIN_AVAILABILITY, MAX_AVAILABILITY + 1))
                     .build();
         } catch (NumberFormatException ex) {
             log.info("Could not parse: " + Arrays.toString(csvRow));
