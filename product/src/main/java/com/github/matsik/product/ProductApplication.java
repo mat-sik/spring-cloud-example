@@ -1,7 +1,6 @@
 package com.github.matsik.product;
 
-import com.github.matsik.product.client.catalog.CatalogClient;
-import org.springframework.boot.CommandLineRunner;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -16,10 +15,7 @@ public class ProductApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(CatalogClient client) {
-        return _ -> {
-            var out = client.getAllProducts(0, 10, true);
-            out.content().forEach(System.out::println);
-        };
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }
