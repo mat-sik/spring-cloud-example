@@ -3,7 +3,7 @@ package com.github.matsik.inventory.availability;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -11,9 +11,8 @@ public class AvailabilityService {
 
     private final AvailabilityRepository availabilityRepository;
 
-    public Availability findById(String id) {
-        Optional<Availability> availability = availabilityRepository.findById(id);
-        return availability.orElseThrow(() -> new AvailabilityNotFoundException(id));
+    public List<Availability> findAllByIds(List<String> ids) {
+        return availabilityRepository.findAllByIdIn(ids);
     }
 
 }
