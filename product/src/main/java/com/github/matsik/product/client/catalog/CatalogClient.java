@@ -28,7 +28,7 @@ public interface CatalogClient {
                 request.pageNumber(),
                 request.pageSize(),
                 request.ascending()
-        ) ;
+        );
     }
 
 }
