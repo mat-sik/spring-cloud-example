@@ -1,6 +1,8 @@
 package com.github.matsik.product;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.matsik.product.client.catalog.CatalogServiceUnavailableException;
+import com.github.matsik.product.client.inventory.InventoryServiceUnavailableException;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,16 @@ public class ControllerAdvice {
     @ExceptionHandler(ProductUnavailableException.class)
     public ProblemDetail onProductUnavailableException(ProductUnavailableException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(CatalogServiceUnavailableException.class)
+    public ProblemDetail onCatalogServiceUnavailableException(CatalogServiceUnavailableException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage());
+    }
+
+    @ExceptionHandler(InventoryServiceUnavailableException.class)
+    public ProblemDetail onInventoryServiceUnavailableException(InventoryServiceUnavailableException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage());
     }
 
     @ExceptionHandler(FeignException.NotFound.class)
