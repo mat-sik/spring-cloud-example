@@ -1,6 +1,5 @@
 package com.github.matsik.product;
 
-import com.github.matsik.commons.response.AvailabilityResponse;
 import com.github.matsik.commons.response.PageResponse;
 import com.github.matsik.commons.response.ProductResponse;
 import com.github.matsik.product.client.catalog.CatalogClient;
@@ -9,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +18,9 @@ public class ProductService {
     private final InventoryClient inventoryClient;
 
     public ProductResponse findById(String id) {
-        if (!productIsAvailable(id)) {
+        Set<String> availabilities = inventoryClient.getAvailabilities(List.of(id));
+
+        if (availabilities.contains(id)) {
             throw new ProductUnavailableException(id);
         }
         return catalogClient.getProductById(id);
@@ -27,20 +29,20 @@ public class ProductService {
     public PageResponse<ProductResponse> findAll(PageRequest pageRequest) {
         PageResponse<ProductResponse> pageResponse = catalogClient.getAllProducts(pageRequest);
 
+        List<String> ids = pageResponse.content().stream()
+                .map(ProductResponse::uniqId)
+                .toList();
+
+        Set<String> availabilities = inventoryClient.getAvailabilities(ids);
+
         List<ProductResponse> content = pageResponse.content().stream()
-                .filter(product -> productIsAvailable(product.uniqId()))
+                .filter(product -> availabilities.contains(product.uniqId()))
                 .toList();
 
         return new PageResponse<>(
                 content,
                 content.size()
         );
-    }
-
-    private boolean productIsAvailable(String id) {
-        // todo: this is inefficient, there should exist endpoint that accepts a list of ids
-        AvailabilityResponse response = inventoryClient.getAvailabilityById(id);
-        return response.count() > 0;
     }
 
 }
