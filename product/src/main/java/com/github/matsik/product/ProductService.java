@@ -20,7 +20,7 @@ public class ProductService {
     public ProductResponse findById(String id) {
         Set<String> availabilities = inventoryRemoteService.getAvailabilities(List.of(id));
 
-        if (availabilities.contains(id)) {
+        if (!availabilities.contains(id)) {
             throw new ProductUnavailableException(id);
         }
         return catalogRemoteService.getProductById(id);
